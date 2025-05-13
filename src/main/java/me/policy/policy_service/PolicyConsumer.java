@@ -27,12 +27,12 @@ public class PolicyConsumer {
             String prefix = json.get("prefix").asText();
             JsonNode completions = json.get("completions");
 
-            // 🟢 Policy logic (we can add more later)
+            // Policy logic (we can add more later)
             Document doc = new Document();
             doc.put("prefix", prefix);
             doc.put("completions", completions);
 
-            // ✅ Upsert into MongoDB
+            // Upsert into MongoDB
             mongoTemplate.getCollection("autocomplete_prefixes")
                     .replaceOne(new Document("prefix", prefix), doc, new com.mongodb.client.model.ReplaceOptions().upsert(true));
 
