@@ -1,0 +1,8 @@
+you cannot run this alone
+but you should build it use this
+mvn clean package -DskipTests
+// -DskipTests this skep the tests phase due to build the jar becus the tests will not work as the kafka and mongo db doesnt work ( and if you run it the path is a docker path
+not host path )
+go to the batch-processing-pipeline and run the docker compose
+that will run the docker  file here and bumvn clean package
+ild the image
