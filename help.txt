@@ -1,5 +1,6 @@
 you cannot run this alone
 but you should build it use this
+//if you dont have maven run it in the maven cmd in the intelij
 mvn clean package -DskipTests
 // -DskipTests this skep the tests phase due to build the jar becus the tests will not work as the kafka and mongo db doesnt work ( and if you run it the path is a docker path
 not host path )
