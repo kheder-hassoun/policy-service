@@ -47,7 +47,7 @@ public class PolicyConsumer {
             }
 
         } catch (IOException e) {
-            System.err.println(" Failed to parse Kafka message: " + e.getMessage());
+            System.err.println("  Failed to parse Kafka message: " + e.getMessage());
         }
     }
 }
