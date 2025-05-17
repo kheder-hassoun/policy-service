@@ -22,24 +22,32 @@ public class PolicyConsumer {
     @KafkaListener(topics = "trending-prefixes", groupId = "autocomplete-policy-group")
     public void consume(String message) {
         try {
-            JsonNode json = objectMapper.readTree(message);
+            JsonNode root = objectMapper.readTree(message);
 
-            String prefix = json.get("prefix").asText();
-            JsonNode completions = json.get("completions");
+            if (root.isArray()) {
+                for (JsonNode node : root) {
+                    String prefix = node.get("prefix").asText();
+                    JsonNode completions = node.get("completions");
 
-            // Policy logic (we can add more later)
-            Document doc = new Document();
-            doc.put("prefix", prefix);
-            doc.put("completions", completions);
+                    Document doc = new Document();
+                    doc.put("prefix", prefix);
+                    doc.put("completions", completions);
 
-            // Upsert into MongoDB
-            mongoTemplate.getCollection("autocomplete_prefixes")
-                    .replaceOne(new Document("prefix", prefix), doc, new com.mongodb.client.model.ReplaceOptions().upsert(true));
+                    mongoTemplate.getCollection("autocomplete_prefixes")
+                            .replaceOne(
+                                    new Document("prefix", prefix),
+                                    doc,
+                                    new com.mongodb.client.model.ReplaceOptions().upsert(true)
+                            );
 
-            System.out.println("Stored prefix: " + prefix);
+                    System.out.println(" Stored prefix: " + prefix);
+                }
+            } else {
+                System.err.println(" Expected a JSON array but got: " + root.toString());
+            }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(" Failed to parse Kafka message: " + e.getMessage());
         }
     }
 }
