@@ -12,6 +12,7 @@ import java.io.IOException;
 @Service
 public class PolicyConsumer {
 
+
     private final MongoTemplate mongoTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
