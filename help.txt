@@ -8,7 +8,7 @@ go to the batch-processing-pipeline and run the docker compose
 that will run the docker  file here and bumvn clean package
 ild the image
 
--------------------------------------
+------------------------------------- DEAD version
 
 steps :
 1- adding dependencies
