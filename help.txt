@@ -7,3 +7,30 @@ not host path )
 go to the batch-processing-pipeline and run the docker compose
 that will run the docker  file here and bumvn clean package
 ild the image
+
+-------------------------------------
+
+steps :
+1- adding dependencies
+
+    <dependency>
+        <groupId>edu.stanford.nlp</groupId>
+        <artifactId>stanford-corenlp</artifactId>
+        <version>4.5.5</version>
+    </dependency>
+    <dependency>
+        <groupId>edu.stanford.nlp</groupId>
+        <artifactId>stanford-corenlp</artifactId>
+        <version>4.5.5</version>
+        <classifier>models</classifier> <!-- includes English models -->
+    </dependency>
+Core Dependency (stanford-corenlp)
+Size: ~15–20 MB (JAR only, no models).
+
+Purpose: Core NLP functionality (tokenization, parsing, etc.).
+
+2. English Models (stanford-corenlp-models)
+Size: ~380–400 MB (includes all English models for NER, POS tagging, parsing, etc.).
+
+Purpose: Pre-trained models for English language processing.
+    ------------------------
