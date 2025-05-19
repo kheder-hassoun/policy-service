@@ -12,12 +12,13 @@ import java.io.IOException;
 @Service
 public class PolicyConsumer {
 
-
     private final MongoTemplate mongoTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final NerService nerService;
 
     public PolicyConsumer(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
+        this.nerService = new NerService();  // Initialize NER
     }
 
     @KafkaListener(topics = "trending-prefixes", groupId = "autocomplete-policy-group")
@@ -27,28 +28,29 @@ public class PolicyConsumer {
 
             if (root.isArray()) {
                 for (JsonNode node : root) {
-                    String prefix = node.get("prefix").asText();
+                    String rawPrefix = node.get("prefix").asText(); // original prefix
+                    String nerKey = nerService.extractKey(rawPrefix); // transformed key
                     JsonNode completions = node.get("completions");
 
                     Document doc = new Document();
-                    doc.put("prefix", prefix);
+                    doc.put("prefix", nerKey);
                     doc.put("completions", completions);
 
                     mongoTemplate.getCollection("autocomplete_prefixes")
                             .replaceOne(
-                                    new Document("prefix", prefix),
+                                    new Document("prefix", nerKey),
                                     doc,
                                     new com.mongodb.client.model.ReplaceOptions().upsert(true)
                             );
 
-                    System.out.println(" Stored prefix: " + prefix);
+                    System.out.println("Stored generalized prefix: " + nerKey);
                 }
             } else {
-                System.err.println(" Expected a JSON array but got: " + root.toString());
+                System.err.println("Expected a JSON array but got: " + root.toString());
             }
 
         } catch (IOException e) {
-            System.err.println("  Failed to parse Kafka message: " + e.getMessage());
+            System.err.println("Failed to parse Kafka message: " + e.getMessage());
         }
     }
 }
