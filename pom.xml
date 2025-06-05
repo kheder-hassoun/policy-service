@@ -57,34 +57,45 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.lettuce</groupId>
+			<artifactId>lettuce-core</artifactId>
+		</dependency>
 
-		<dependency>
-			<groupId>edu.stanford.nlp</groupId>
-			<artifactId>stanford-corenlp</artifactId>
-			<version>4.5.5</version>
-		</dependency>
-		<dependency>
-			<groupId>edu.stanford.nlp</groupId>
-			<artifactId>stanford-corenlp</artifactId>
-			<version>4.5.5</version>
-			<classifier>models</classifier> <!-- includes English models -->
-		</dependency>
+		<!--		<dependency>-->
+<!--			<groupId>edu.stanford.nlp</groupId>-->
+<!--			<artifactId>stanford-corenlp</artifactId>-->
+<!--			<version>4.5.5</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>edu.stanford.nlp</groupId>-->
+<!--			<artifactId>stanford-corenlp</artifactId>-->
+<!--			<version>4.5.5</version>-->
+<!--			<classifier>models</classifier> &lt;!&ndash; includes English models &ndash;&gt;-->
+<!--		</dependency>-->
 
 		<!-- Other dependencies... -->
 
 		<!-- JAXB for CoreNLP + JollyDay -->
-		<dependency>
-			<groupId>org.glassfish.jaxb</groupId>
-			<artifactId>jaxb-runtime</artifactId>
-			<version>2.3.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jaxb</groupId>
-			<artifactId>jaxb-core</artifactId>
-			<version>2.3.0.1</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.glassfish.jaxb</groupId>-->
+<!--			<artifactId>jaxb-runtime</artifactId>-->
+<!--			<version>2.3.3</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.glassfish.jaxb</groupId>-->
+<!--			<artifactId>jaxb-core</artifactId>-->
+<!--			<version>2.3.0.1</version>-->
+<!--		</dependency>-->
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
