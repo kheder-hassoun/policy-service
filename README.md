@@ -109,6 +109,79 @@ Example:
 
 ---
 
+##  Kubernetes Deployment
+
+### ConfigMap
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: policy-service-config
+  namespace: kh-pipeline
+  labels:
+    app: policy-service
+data:
+  application.properties: |
+    # Kafka
+    spring.kafka.bootstrap-servers=kafka-service:9092
+    spring.kafka.consumer.group-id=policy-group
+    spring.kafka.consumer.auto-offset-reset=earliest
+    spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+    spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+    # Redis Cluster
+    spring.data.redis.cluster.nodes=\
+    redis-redis-cluster-0.redis-redis-cluster-headless:6379,\
+    redis-redis-cluster-1.redis-redis-cluster-headless:6379,\
+    redis-redis-cluster-2.redis-redis-cluster-headless:6379
+    spring.data.redis.cluster.max-redirects=3
+```
+
+### Deployment
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: policy-service
+  namespace: kh-pipeline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: policy-service
+  template:
+    metadata:
+      labels:
+        app: policy-service
+    spec:
+      containers:
+        - name: policy-service
+          image: 172.29.3.41:5000/policy_service:1.4
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8096
+          volumeMounts:
+            - name: app-props
+              mountPath: /workspace/config
+              readOnly: true
+          env:
+            - name: SPRING_CONFIG_ADDITIONAL_LOCATION
+              value: file:/workspace/config/
+            - name: SPRING_DATA_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-redis-cluster
+                  key: redis-password
+      volumes:
+        - name: app-props
+          configMap:
+            name: policy-service-config
+```
+
+---
+
 ## 📄 License
 
 kheder khdrhswn32@gmail.com 
